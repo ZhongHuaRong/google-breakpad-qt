@@ -79,8 +79,8 @@ linux: {
   HEADERS += $$BREAKPAD_PATH/src/common/linux/guid_creator.h
   HEADERS += $$BREAKPAD_PATH/src/common/linux/elfutils.h
   HEADERS += $$BREAKPAD_PATH/src/common/linux/elfutils-inl.h
+  HEADERS += $$BREAKPAD_PATH/src/common/linux/breakpad_getcontext.h
   HEADERS += $$BREAKPAD_PATH/src/common/using_std_string.h
-  HEADERS += $$BREAKPAD_PATH/src/common/memory.h
   HEADERS += $$BREAKPAD_PATH/src/common/basictypes.h
   HEADERS += $$BREAKPAD_PATH/src/common/memory_range.h
   HEADERS += $$BREAKPAD_PATH/src/common/string_conversion.h
@@ -107,10 +107,65 @@ linux: {
   SOURCES += $$BREAKPAD_PATH/src/common/linux/safe_readlink.cc
   SOURCES += $$BREAKPAD_PATH/src/common/linux/guid_creator.cc
   SOURCES += $$BREAKPAD_PATH/src/common/linux/elfutils.cc
+  SOURCES += $$BREAKPAD_PATH/src/common/linux/breakpad_getcontext.S
   SOURCES += $$BREAKPAD_PATH/src/common/string_conversion.cc
-  SOURCES += $$BREAKPAD_PATH/src/common/convert_UTF.c
+  SOURCES += $$BREAKPAD_PATH/src/common/convert_UTF.cc
   
   QMAKE_CXXFLAGS+=-g
+  
+  handler.files = $$BREAKPAD_PATH/src/client/linux/handler/*.h
+  handler.path = $$OUT_PWD/3rdparty/include/breakpad/client/linux/handler
+  
+  crash.files = $$BREAKPAD_PATH/src/client/linux/crash_generation/crash_generation_client.h
+  crash.path = $$OUT_PWD/3rdparty/include/breakpad/client/linux/crash_generation
+  
+  minidump.files = $$BREAKPAD_PATH/src/client/linux/minidump_writer/minidump_writer.h \
+                   $$BREAKPAD_PATH/src/client/linux/minidump_writer/line_reader.h \
+                   $$BREAKPAD_PATH/src/client/linux/minidump_writer/linux_dumper.h \
+                   $$BREAKPAD_PATH/src/client/linux/minidump_writer/linux_ptrace_dumper.h \
+                   $$BREAKPAD_PATH/src/client/linux/minidump_writer/directory_reader.h 
+  minidump.path = $$OUT_PWD/3rdparty/include/breakpad/client/linux/minidump_writer
+  
+  log.files = $$BREAKPAD_PATH/src/client/linux/log/log.h
+  log.path = $$OUT_PWD/3rdparty/include/breakpad/client/linux/log
+
+  client.files = $$BREAKPAD_PATH/src/client/minidump_file_writer-inl.h \
+                 $$BREAKPAD_PATH/src/client/minidump_file_writer.h
+  client.path = $$OUT_PWD/3rdparty/include/breakpad/client
+
+
+  common_linux.files = $$BREAKPAD_PATH/src/common/linux/linux_libc_support.h \
+                       $$BREAKPAD_PATH/src/common/linux/eintr_wrapper.h \
+                       $$BREAKPAD_PATH/src/common/linux/ignore_ret.h \
+                       $$BREAKPAD_PATH/src/common/linux/file_id.h \
+                       $$BREAKPAD_PATH/src/common/linux/memory_mapped_file.h \
+                       $$BREAKPAD_PATH/src/common/linux/safe_readlink.h \
+                       $$BREAKPAD_PATH/src/common/linux/guid_creator.h \
+                       $$BREAKPAD_PATH/src/common/linux/elfutils.h \
+                       $$BREAKPAD_PATH/src/common/linux/elfutils-inl.h \
+                       $$BREAKPAD_PATH/src/common/linux/breakpad_getcontext.h
+  common_linux.path = $$OUT_PWD/3rdparty/include/breakpad/common/linux
+
+
+  common.files = $$BREAKPAD_PATH/src/common/using_std_string.h \
+                 $$BREAKPAD_PATH/src/common/basictypes.h \
+                 $$BREAKPAD_PATH/src/common/memory_range.h \
+                 $$BREAKPAD_PATH/src/common/memory_allocator.h \
+                 $$BREAKPAD_PATH/src/common/string_conversion.h \
+                 $$BREAKPAD_PATH/src/common/scoped_ptr.h \
+                 $$BREAKPAD_PATH/src/common/convert_UTF.h
+  common.path = $$OUT_PWD/3rdparty/include/breakpad/common
+
+  google_breakpad.files = $$BREAKPAD_PATH/src/google_breakpad/common/*.h
+  google_breakpad.path = $$OUT_PWD/3rdparty/include/breakpad/google_breakpad/common
+
+  dump_writer_common.files = $$BREAKPAD_PATH/src/client/linux/dump_writer_common/*.h
+  dump_writer_common.path = $$OUT_PWD/3rdparty/include/breakpad/client/linux/dump_writer_common/
+
+  lss.files = $$BREAKPAD_PATH/src/third_party/lss/linux_syscall_support.h
+  lss.path = $$OUT_PWD/3rdparty/include/breakpad/third_party/lss
+  
+  INSTALLS += common_linux common log client minidump crash handler google_breakpad dump_writer_common lss
 }
  
 windows: {
@@ -152,6 +207,6 @@ windows: {
   INSTALLS += common_windows common ipc crash handler google_breakpad
 }
 
-TARGET = google-breakpad
+TARGET = breakpad
 CONFIG += warn_on staticlib
 TEMPLATE = lib
