@@ -1,5 +1,6 @@
-BREAKPAD_PATH=google-breakpad
+BREAKPAD_PATH=$$PWD/breakpad
 INCLUDEPATH += $$BREAKPAD_PATH/src
+DESTDIR = $$OUT_PWD/3rdparty/lib
  
 mac: {
   HEADERS += $$BREAKPAD_PATH/src/client/mac/handler/exception_handler.h
@@ -126,6 +127,29 @@ windows: {
   SOURCES += $$BREAKPAD_PATH/src/common/windows/string_utils.cc
   SOURCES += $$BREAKPAD_PATH/src/common/windows/guid_string.cc
   SOURCES += $$BREAKPAD_PATH/src/client/windows/crash_generation/crash_generation_client.cc 
+  
+  
+  common_windows.files = $$BREAKPAD_PATH/src/common/windows/string_utils-inl.h \
+						 $$BREAKPAD_PATH/src/common/windows/guid_string.h		
+  common_windows.path = $$OUT_PWD/3rdparty/include/breakpad/common/windows
+  
+
+  common.files = $$BREAKPAD_PATH/src/common/scoped_ptr.h
+  common.path = $$OUT_PWD/3rdparty/include/breakpad/common
+
+  ipc.files = $$BREAKPAD_PATH/src/client/windows/common/ipc_protocol.h
+  ipc.path = $$OUT_PWD/3rdparty/include/breakpad/client/windows/common
+  
+  crash.files = $$BREAKPAD_PATH/src/client/windows/crash_generation/crash_generation_client.h
+  crash.path = $$OUT_PWD/3rdparty/include/breakpad/client/windows/crash_generation
+  
+  handler.files = $$BREAKPAD_PATH/src/client/windows/handler/exception_handler.h
+  handler.path = $$OUT_PWD/3rdparty/include/breakpad/client/windows/handler
+  
+  google_breakpad.files = $$BREAKPAD_PATH/src/google_breakpad/common/*.h
+  google_breakpad.path = $$OUT_PWD/3rdparty/include/breakpad/google_breakpad/common
+  
+  INSTALLS += common_windows common ipc crash handler google_breakpad
 }
 
 TARGET = google-breakpad
