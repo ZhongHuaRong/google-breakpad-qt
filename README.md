@@ -5,4 +5,7 @@ This is the original Google Breakpad slightly modified for better distribution
 
 Originally copyright (C) by Google, licensed under similar to BSD license.
 
-breakpad:https://github.com/google/breakpad
+该工程简化了google breakpad构建步骤,可以在各个平台上构建breakpad依赖库
+make install 可以安装头文件到构建路径
+
+breakpad目录中带有旧版本的源代码,可以去[官网](https://github.com/google/breakpad)下载最新代码
