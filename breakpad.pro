@@ -26,7 +26,6 @@ mac: {
   HEADERS += $$BREAKPAD_PATH/src/common/linux/linux_libc_support.h
   HEADERS += $$BREAKPAD_PATH/src/common/string_conversion.h
   HEADERS += $$BREAKPAD_PATH/src/common/md5.h
-  HEADERS += $$BREAKPAD_PATH/src/common/memory.h
   HEADERS += $$BREAKPAD_PATH/src/common/using_std_string.h
   HEADERS += $$BREAKPAD_PATH/src/common/convert_UTF.h
   HEADERS += $$BREAKPAD_PATH/src/google_breakpad/common/minidump_exception_mac.h
@@ -52,10 +51,54 @@ mac: {
   SOURCES += $$BREAKPAD_PATH/src/common/md5.cc
   SOURCES += $$BREAKPAD_PATH/src/common/string_conversion.cc
   SOURCES += $$BREAKPAD_PATH/src/common/linux/linux_libc_support.cc
-  SOURCES += $$BREAKPAD_PATH/src/common/convert_UTF.c
+  SOURCES += $$BREAKPAD_PATH/src/common/convert_UTF.cc
   LIBS += /System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation
   LIBS += /System/Library/Frameworks/CoreServices.framework/Versions/A/CoreServices
   QMAKE_CXXFLAGS+=-g
+
+  handler.files = $$BREAKPAD_PATH/src/client/mac/handler/*.h
+  handler.path = $$OUT_PWD/3rdparty/include/breakpad/client/mac/handler
+
+  crash.files = $$BREAKPAD_PATH/src/client/mac/crash_generation/*.h
+  crash.path = $$OUT_PWD/3rdparty/include/breakpad/client/mac/crash_generation
+
+  common_mac.files = $$BREAKPAD_PATH/src/common/mac/macho_utilities.h \
+                     $$BREAKPAD_PATH/src/common/mac/basictypes.h \
+                     $$BREAKPAD_PATH/src/common/mac/MachIPC.h \
+                     $$BREAKPAD_PATH/src/common/mac/scoped_task_suspend-inl.h \
+                     $$BREAKPAD_PATH/src/common/mac/file_id.h \
+                     $$BREAKPAD_PATH/src/common/mac/macho_id.h \
+                     $$BREAKPAD_PATH/src/common/mac/macho_walker.h \
+                     $$BREAKPAD_PATH/src/common/mac/macho_utilities.h \
+                     $$BREAKPAD_PATH/src/common/mac/bootstrap_compat.h \
+                     $$BREAKPAD_PATH/src/common/mac/string_utilities.h
+  common_mac.path = $$OUT_PWD/3rdparty/include/breakpad/common/mac
+
+  common_linux.files = $$BREAKPAD_PATH/src/common/linux/linux_libc_support.h
+  common_linux.path = $$OUT_PWD/3rdparty/include/breakpad/common/linux
+
+  common.files = $$BREAKPAD_PATH/src/common/using_std_string.h \
+                 $$BREAKPAD_PATH/src/common/basictypes.h \
+                 $$BREAKPAD_PATH/src/common/memory_range.h \
+                 $$BREAKPAD_PATH/src/common/memory_allocator.h \
+                 $$BREAKPAD_PATH/src/common/string_conversion.h \
+                 $$BREAKPAD_PATH/src/common/scoped_ptr.h \
+                 $$BREAKPAD_PATH/src/common/convert_UTF.h \
+                 $$BREAKPAD_PATH/src/common/md5.h
+  common.path = $$OUT_PWD/3rdparty/include/breakpad/common
+
+  google_breakpad.files = $$BREAKPAD_PATH/src/google_breakpad/common/*.h
+  google_breakpad.path = $$OUT_PWD/3rdparty/include/breakpad/google_breakpad/common
+
+
+  client.files = $$BREAKPAD_PATH/src/client/minidump_file_writer-inl.h \
+                 $$BREAKPAD_PATH/src/client/minidump_file_writer.h
+  client.path = $$OUT_PWD/3rdparty/include/breakpad/client
+
+  lss.files = $$BREAKPAD_PATH/src/third_party/lss/linux_syscall_support.h
+  lss.path = $$OUT_PWD/3rdparty/include/breakpad/third_party/lss
+
+  INSTALLS += common_linux common_mac common client crash handler google_breakpad lss
 }
  
 linux: {
